@@ -35,34 +35,34 @@ router.post("/updated-storeA", (req, res) => {
   res.send(200).end;
 });
 
-router.post("/created-storeB", (req, res) => {
-    const responseB = req.body;
+// router.post("/created-storeB", (req, res) => {
+//     const responseB = req.body;
 
-    BigCommerceStoreB.get(`/products/${responseB.data.id}`).then((res) => {
-      const product = JSON.parse(res.data);
-      BigCommerceStoreA.post(
-        `/products/${responseB.data.id}`,
-        product
-      ).then((data) => {});
-      // Catch any errors, or handle the data returned
-    });
+//     BigCommerceStoreB.get(`/products/${responseB.data.id}`).then((res) => {
+//       const product = JSON.parse(res.data);
+//       BigCommerceStoreA.post(
+//         `/products/${responseB.data.id}`,
+//         product
+//       ).then((data) => {});
+//       // Catch any errors, or handle the data returned
+//     });
   
-    res.send(200).end;
-});
+//     res.send(200).end;
+// });
 
-router.post("/updated-storeB", (req, res) => {
-    const responseB = req.body;
+// router.post("/updated-storeB", (req, res) => {
+//     const responseB = req.body;
 
-    BigCommerceStoreB.get(`/products/${responseB.data.id}`).then((res) => {
-      const product = JSON.parse(res.data);
-      BigCommerceStoreA.put(
-        `/products/${responseB.data.id}`,
-        product
-      ).then((data) => {});
-      // Catch any errors, or handle the data returned
-    });
+//     BigCommerceStoreB.get(`/products/${responseB.data.id}`).then((res) => {
+//       const product = JSON.parse(res.data);
+//       BigCommerceStoreA.put(
+//         `/products/${responseB.data.id}`,
+//         product
+//       ).then((data) => {});
+//       // Catch any errors, or handle the data returned
+//     });
   
-    res.send(200).end;
-});
+//     res.send(200).end;
+// });
 
 module.exports = router;
