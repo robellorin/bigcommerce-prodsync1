@@ -4,8 +4,9 @@ const router = require("express").Router();
 const { BigCommerceStoreA, BigCommerceStoreB } = require("../stores/stores");
 
 router.post("/created-storeA", (req, res) => {
-    const responseA = req.body;
-
+  const responseA = req.body;
+  console.log('product is created')
+  console.log(responseA)
   BigCommerceStoreA.get(`/products/${responseA.data.id}`).then((res) => {
     const product = JSON.parse(res.data);
     BigCommerceStoreB.post(
