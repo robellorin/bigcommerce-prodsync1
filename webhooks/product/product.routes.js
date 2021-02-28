@@ -8,7 +8,16 @@ router.post("/created-storeA", (req, res) => {
   console.log('product is created')
   console.log(responseA)
   BigCommerceStoreA.get(`/products/${responseA.data.id}`).then((res) => {
-    const product = JSON.parse(res.data);
+    console.log(res.categories)
+    const product = {
+      name: res.name,
+      type: res.type,
+      sku: res.sku,
+      price: res.price,
+      weight: res.weight,
+      categories: [23],
+      availability: res.availability
+    }
     console.log(product)
     BigCommerceStoreB.post(
       `/products`,

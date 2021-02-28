@@ -15,5 +15,5 @@ app.use('/webhooks', require('./webhooks/webhooks-routes'));
 
 app.listen(APP_PORT, async function () {
     await createWebhook();
-    console.log('Listening for webhooks on port 3000')
+    console.log('Listening for webhooks on port 5000')
 })

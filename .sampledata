@@ -1,0 +1,8 @@
+{
+  created_at: 1614507432,
+  store_id: '1001677576',
+  producer: 'stores/g6wdqd838v',
+  scope: 'store/product/created',
+  hash: '2fb70abe208b11cf24a4ec63361572190220eb63',
+  data: { type: 'product', id: 124 }
+}
