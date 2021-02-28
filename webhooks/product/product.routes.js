@@ -3,49 +3,48 @@ const router = require("express").Router();
 
 const { BigCommerceStoreA, BigCommerceStoreB } = require("../stores/stores");
 
-router.post("/created-storeA", (req, res) => {
+const productWebhookFunc = (req, res) => {
   const responseA = req.body;
-  console.log('- received a webhook: a product is created in StoreA')
+  console.log('- received a webhook:')
   console.log(responseA)
-  BigCommerceStoreA.get(`/catalog/products/${responseA.data.id}`).then((res) => {
-    const { name, weight, price, type, description, availability, sku } = res.data;
-    const product = { name, weight, price, type, description, availability, sku };
-    BigCommerceStoreB.post(
-      `/catalog/products`,
-      product
-    ).then((data) => {})
-    .catch(err=> {
-      console.log("failed creating products details in StoreB")
-      console.log(err)
-    })
-    // Catch any errors, or handle the data returned
-  })
-  .then((data) => {})
-  .catch(err=> {
-    console.log("failed getting products details from StoreA")
-    console.log(err)
-  })
-
-  res.sendStatus(200).end;
-});
-
-router.post("/updated-storeA", (req, res) => {
-  const responseA = req.body;
-  console.log('- received a webhook: a product is updated in StoreA')
-  console.log(responseA)
-  BigCommerceStoreA.get(`/catalog/products/${responseA.data.id}`).then((res) => {
-    const product = JSON.parse(res.data);
-    BigCommerceStoreB.put(
-      `/catalog/products/${responseA.data.id}`,
-      product
-    ).then((data) => {})
-    .catch(err=> {
-      console.log("failed updating products")
-      console.log(err)
+  BigCommerceStoreA.get(`/catalog/products/${responseA.data.id}`).then((resA) => {
+    const product = resA.data;
+    BigCommerceStoreB.get(`/catalog/products/?name=${product.name}&page=1&limit=50`).then((resB) => {
+      if (resB.data && resB.data.length>0) {
+        const existingProduct = resB.data[0];
+        BigCommerceStoreB.put(
+          `/catalog/products/${existingProduct.id}`,
+          existingProduct
+        ).then((data) => {
+          console.log("Product is successfully updated in StoreB")
+          res.sendStatus(200).end;
+        })
+        .catch(err=> {
+          console.log("failed updating products")
+          console.log(err)
+          res.sendStatus(400).end;
+        })
+      }
+      else {
+        BigCommerceStoreB.post(
+          `/catalog/products`,
+          product
+        ).then((data) => {
+          console.log("Product is successfully created in StoreB")
+          res.sendStatus(200).end;
+        })
+        .catch(err=> {
+          console.log("failed creating products details in StoreB")
+          console.log(err)
+          res.sendStatus(400).end;
+        })
+      }
     })
   });
+}
 
-  res.sendStatus(200).end;
-});
+router.post("/created-storeA", productWebhookFunc);
+
+router.post("/updated-storeA", productWebhookFunc);
 
 module.exports = router;
