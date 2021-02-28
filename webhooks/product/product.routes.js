@@ -13,7 +13,10 @@ router.post("/created-storeA", (req, res) => {
     BigCommerceStoreB.post(
       `/products`,
       product
-    ).then((data) => {});
+    ).then((data) => {})
+    .catch(err=> {
+      console.log(err)
+    })
     // Catch any errors, or handle the data returned
   });
 
