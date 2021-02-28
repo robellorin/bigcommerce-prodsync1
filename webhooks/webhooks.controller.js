@@ -21,8 +21,6 @@ module.exports = () => {
   BigCommerceStoreA.get("/hooks").then((data) => {
     const webhooks = data;
     const scopes = webhooks.map((a) => a.scope);
-
-    console.log(scopes);
     if (
       scopes.indexOf("store/product/created") > -1 ||
       scopes.indexOf("store/product/updated") > -1
@@ -35,6 +33,7 @@ module.exports = () => {
           destination: `${process.env.APP_URL}${el.destination}-storeA`,
           is_active: true,
         };
+        console.log(hookBody);
         BigCommerceStoreA.post("/hooks", hookBody).then((data) => {
           console.log("Product webhook created");
         });
