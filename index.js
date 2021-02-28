@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 
+const APP_PORT = process.env.PORT || 5000;
 const bodyParser = require('body-parser');
 const dotenv = require('dotenv');
 const createWebhook = require('./webhooks/webhooks.controller');
@@ -12,7 +13,7 @@ app.use(bodyParser.json());
 app.use('/webhooks', require('./webhooks/webhooks-routes'));
 
 
-app.listen(3000, async function () {
+app.listen(APP_PORT, async function () {
     await createWebhook();
     console.log('Listening for webhooks on port 3000')
 })
