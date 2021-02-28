@@ -20,7 +20,8 @@ router.post("/created-storeA", (req, res) => {
 
 router.post("/updated-storeA", (req, res) => {
   const responseA = req.body;
-
+  console.log('product is updated')
+  console.log(responseA)
   BigCommerceStoreA.get(`/products/${responseA.data.id}`).then((res) => {
     const product = JSON.parse(res.data);
     BigCommerceStoreB.put(
