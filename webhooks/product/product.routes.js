@@ -14,7 +14,7 @@ const productWebhookFunc = (req, res) => {
         const existingProduct = resB.data[0];
         BigCommerceStoreB.put(
           `/catalog/products/${existingProduct.id}`,
-          existingProduct
+          product
         ).then((data) => {
           console.log("Product is successfully updated in StoreB")
           res.sendStatus(200).end;
