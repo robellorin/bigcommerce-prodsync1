@@ -15,10 +15,16 @@ router.post("/created-storeA", (req, res) => {
       product
     ).then((data) => {})
     .catch(err=> {
+      console.log("failed creating products details in StoreB")
       console.log(err)
     })
     // Catch any errors, or handle the data returned
-  });
+  })
+  .then((data) => {})
+  .catch(err=> {
+    console.log("failed getting products details from StoreA")
+    console.log(err)
+  })
 
   res.send(200).end;
 });
@@ -32,8 +38,11 @@ router.post("/updated-storeA", (req, res) => {
     BigCommerceStoreB.put(
       `/products/${responseA.data.id}`,
       product
-    ).then((data) => {});
-    // Catch any errors, or handle the data returned
+    ).then((data) => {})
+    .catch(err=> {
+      console.log("failed updating products")
+      console.log(err)
+    })
   });
 
   res.send(200).end;
