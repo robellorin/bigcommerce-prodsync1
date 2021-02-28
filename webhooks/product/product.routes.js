@@ -10,6 +10,7 @@ const productWebhookFunc = (req, res) => {
   BigCommerceStoreA.get(`/catalog/products/${responseA.data.id}`).then((resA) => {
     const product = resA.data;
     BigCommerceStoreB.get(`/catalog/products?name=${product.name}`).then((resB) => {
+      console.log.apply(resB)
       if (resB.data && resB.data.length>0) {
         const existingProduct = resB.data[0];
         BigCommerceStoreB.put(
