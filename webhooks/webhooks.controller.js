@@ -19,7 +19,7 @@ module.exports = () => {
  
   // For Store A
   BigCommerceStoreA.get("/hooks").then((data) => {
-    const webhooks = data;
+    const webhooks = data.data;
     const scopes = webhooks.map((a) => a.scope);
     if (
       scopes.indexOf("store/product/created") > -1 ||

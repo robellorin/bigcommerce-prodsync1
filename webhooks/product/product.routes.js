@@ -5,22 +5,13 @@ const { BigCommerceStoreA, BigCommerceStoreB } = require("../stores/stores");
 
 router.post("/created-storeA", (req, res) => {
   const responseA = req.body;
-  console.log('product is created')
+  console.log('- received a webhook: a product is created in StoreA')
   console.log(responseA)
-  BigCommerceStoreA.get(`/products/${responseA.data.id}`).then((res) => {
-    console.log(res.categories)
-    const product = {
-      name: res.name,
-      type: res.type,
-      sku: res.sku,
-      price: res.price,
-      weight: res.weight,
-      categories: [23],
-      availability: res.availability
-    }
-    console.log(product)
+  BigCommerceStoreA.get(`/catalog/products/${responseA.data.id}`).then((res) => {
+    const { name, weight, price, type, description, availability, sku } = res.data;
+    const product = { name, weight, price, type, description, availability, sku };
     BigCommerceStoreB.post(
-      `/products`,
+      `/catalog/products`,
       product
     ).then((data) => {})
     .catch(err=> {
@@ -35,17 +26,17 @@ router.post("/created-storeA", (req, res) => {
     console.log(err)
   })
 
-  res.send(200).end;
+  res.sendStatus(200).end;
 });
 
 router.post("/updated-storeA", (req, res) => {
   const responseA = req.body;
-  console.log('product is updated')
+  console.log('- received a webhook: a product is updated in StoreA')
   console.log(responseA)
-  BigCommerceStoreA.get(`/products/${responseA.data.id}`).then((res) => {
+  BigCommerceStoreA.get(`/catalog/products/${responseA.data.id}`).then((res) => {
     const product = JSON.parse(res.data);
     BigCommerceStoreB.put(
-      `/products/${responseA.data.id}`,
+      `/catalog/products/${responseA.data.id}`,
       product
     ).then((data) => {})
     .catch(err=> {
@@ -54,37 +45,7 @@ router.post("/updated-storeA", (req, res) => {
     })
   });
 
-  res.send(200).end;
+  res.sendStatus(200).end;
 });
-
-// router.post("/created-storeB", (req, res) => {
-//     const responseB = req.body;
-
-//     BigCommerceStoreB.get(`/products/${responseB.data.id}`).then((res) => {
-//       const product = JSON.parse(res.data);
-//       BigCommerceStoreA.post(
-//         `/products/${responseB.data.id}`,
-//         product
-//       ).then((data) => {});
-//       // Catch any errors, or handle the data returned
-//     });
-  
-//     res.send(200).end;
-// });
-
-// router.post("/updated-storeB", (req, res) => {
-//     const responseB = req.body;
-
-//     BigCommerceStoreB.get(`/products/${responseB.data.id}`).then((res) => {
-//       const product = JSON.parse(res.data);
-//       BigCommerceStoreA.put(
-//         `/products/${responseB.data.id}`,
-//         product
-//       ).then((data) => {});
-//       // Catch any errors, or handle the data returned
-//     });
-  
-//     res.send(200).end;
-// });
 
 module.exports = router;
