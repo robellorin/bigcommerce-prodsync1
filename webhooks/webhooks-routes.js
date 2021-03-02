@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const BigCommerce = require('node-bigcommerce');
+
 const bigCommerce = new BigCommerce({
 clientId: process.env.CLIENTID,
 accessToken: process.env.ACCESSTOKEN,

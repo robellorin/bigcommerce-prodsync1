@@ -45,7 +45,6 @@ const productWebhookFunc = (req, res) => {
 }
 
 router.post("/created-storeA", productWebhookFunc);
-
 router.post("/updated-storeA", productWebhookFunc);
 
 module.exports = router;
