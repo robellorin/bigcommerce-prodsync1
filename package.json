@@ -5,15 +5,19 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon index"
+    "start": "node index.js",
+    "dev": "nodemon index.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "https": "^1.0.0",
-    "node-bigcommerce": "^4.1.0",
+    "morgan": "^1.10.0",
+    "node-bigcommerce": "^4.1.0"
+  },
+  "devDependencies": {
     "nodemon": "^2.0.7"
   }
 }

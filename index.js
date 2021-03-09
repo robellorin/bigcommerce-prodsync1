@@ -1,19 +1,11 @@
-const express = require('express');
-const app = express();
+const app = require("./app"); // the actual Express application
+const http = require("http");
+const config = require("./utils/config");
+const logger = require("./utils/logger");
 
-const APP_PORT = process.env.PORT || 5000;
-const bodyParser = require('body-parser');
-const dotenv = require('dotenv');
-const createWebhook = require('./webhooks/webhooks.controller');
-dotenv.config();
+const server = http.createServer(app);
 
-
-app.use(bodyParser.json());
-// when there's a post request to /webooks...
-app.use('/webhooks', require('./webhooks/webhooks-routes'));
-
-
-app.listen(APP_PORT, async function () {
-    await createWebhook();
-    console.log('Listening for webhooks on port 5000')
-})
+server.listen(config.PORT || 3000, () => {
+  logger.info("App is running on address : ", config.APP_URL || 3000);
+  logger.info("Server running on port : ", config.PORT);
+});
