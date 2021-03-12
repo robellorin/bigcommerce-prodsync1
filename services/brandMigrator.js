@@ -17,8 +17,8 @@ const brandMigrator = async (id) => {
     delete B.id;
     delete B.custom_url;
 
-    console.log(_.isEqual(A, B));
-    console.log("brand equality comparison done");
+    // console.log(_.isEqual(A, B));
+    // console.log("brand equality comparison done");
 
     if (!_.isEqual(A, B)) {
       const brand = { ...A, id: brandOnB.id };
@@ -27,7 +27,6 @@ const brandMigrator = async (id) => {
       console.log(`${brand.name} brand updated in Store B`);
       return brand;
     } else {
-      console.log(brandOnB);
       return brandOnB;
     }
   } else {

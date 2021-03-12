@@ -20,8 +20,8 @@ const categoryMigrator = async (id) => {
     let B = { ...categoryOnB };
     delete B.id;
 
-    console.log(_.isEqual(A, B));
-    console.log("category equality comparison done");
+    // console.log(_.isEqual(A, B));
+    // console.log("category equality comparison done");
 
     if (!_.isEqual(A, B)) {
       const category = { ...categoryOnA, id: categoryOnB.id, parent_id: parentId.id };
@@ -30,7 +30,6 @@ const categoryMigrator = async (id) => {
       console.log(`${category.name} category updated in Store B`);
       return category;
     } else {
-      console.log(categoryOnB);
       return categoryOnB;
     }
   } else {
