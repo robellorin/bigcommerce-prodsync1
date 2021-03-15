@@ -1,8 +1,11 @@
 var _ = require("lodash");
+const logger = require("../utils/logger");
 
 const { BigCommerceStoreA, BigCommerceStoreB } = require("../stores/stores");
 
 const brandMigrator = async (id) => {
+  let result;
+
   const responseFromA = await BigCommerceStoreA.get(`/catalog/brands/${id}`);
   const brandOnA = responseFromA.data;
 
@@ -17,26 +20,25 @@ const brandMigrator = async (id) => {
     delete B.id;
     delete B.custom_url;
 
-    // console.log(_.isEqual(A, B));
-    // console.log("brand equality comparison done");
-
     if (!_.isEqual(A, B)) {
       const brand = { ...A, id: brandOnB.id };
 
       await BigCommerceStoreB.put(`/catalog/brands/${brandOnB.id}`, brand);
-      console.log(`${brand.name} brand updated in Store B`);
-      return brand;
+      logger.info(`${brand.name} brand updated in Store B`);
+      result = brand;
     } else {
-      return brandOnB;
+      result = brandOnB;
     }
   } else {
     const brand = { ...brandOnA };
     delete brand.id;
 
     const createdBrand = await BigCommerceStoreB.post(`/catalog/brands`, brand);
-    console.log(`${brand.name} brand created in Store B`);
-    return createdBrand.data;
+    logger.info(`${brand.name} brand created in Store B`);
+    result = createdBrand.data;
   }
+
+  return result;
 };
 
 module.exports = { brandMigrator };

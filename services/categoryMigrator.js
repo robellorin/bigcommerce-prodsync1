@@ -1,7 +1,9 @@
 var _ = require("lodash");
+var logger = require("../utils/logger");
 const { BigCommerceStoreA, BigCommerceStoreB } = require("../stores/stores");
 
 const categoryMigrator = async (id) => {
+  let result;
   let parentId = { id: 0 };
 
   const responseFromA = await BigCommerceStoreA.get(`/catalog/categories/${id}`);
@@ -20,26 +22,25 @@ const categoryMigrator = async (id) => {
     let B = { ...categoryOnB };
     delete B.id;
 
-    // console.log(_.isEqual(A, B));
-    // console.log("category equality comparison done");
-
     if (!_.isEqual(A, B)) {
       const category = { ...categoryOnA, id: categoryOnB.id, parent_id: parentId.id };
 
       await BigCommerceStoreB.put(`/catalog/categories/${categoryOnB.id}`, category);
-      console.log(`${category.name} category updated in Store B`);
-      return category;
+      logger.info(`${category.name} category updated in Store B`);
+      result = category;
     } else {
-      return categoryOnB;
+      result = categoryOnB;
     }
   } else {
     const category = { ...categoryOnA, parent_id: parentId.id };
     delete category.id;
 
     const createdCategory = await BigCommerceStoreB.post(`/catalog/categories`, category);
-    console.log(`${category.name} category created in Store B`);
-    return createdCategory.data;
+    logger.info(`${category.name} category created in Store B`);
+    result = createdCategory.data;
   }
+
+  return result;
 };
 
 module.exports = { categoryMigrator };
