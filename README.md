@@ -1,5 +1,7 @@
 # Product Sync from Store A to Store B through bigcommerce webhook
 
+Sync Products, Categories, Brands, Images and Variant Options using Hooks.
+
 ## 1. Install node modules
 
 ```

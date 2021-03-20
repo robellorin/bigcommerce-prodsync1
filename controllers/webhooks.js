@@ -3,25 +3,35 @@ const webhooksController = require("express").Router();
 const { productMigrator } = require("../services/productMigrator");
 const { categoryMigrator } = require("../services/categoryMigrator");
 
+let a = 0;
+
 webhooksController.post("/products/created", async function (req, res) {
-  console.log("Product Created Handling Route is initiated");
-  // respond with 200 OK
-  const productId = req.body.data.id;
-  const changeType = req.body.data.type;
-  if (changeType == "product" && productId) {
-    const product = await productMigrator(productId);
-    res.json(product);
+  if (a === 0) {
+    a = 1;
+    console.log("Product Created Handling Route is initiated");
+    // respond with 200 OK
+    const productId = req.body.data.id;
+    const changeType = req.body.data.type;
+    if (changeType == "product" && productId) {
+      const product = await productMigrator(productId);
+      a = 0;
+      res.json(product);
+    }
   }
 });
 
 webhooksController.post("/products/updated", async function (req, res) {
-  console.log("Product Updated Handling Route is initiated");
-  // respond with 200 OK
-  const productId = req.body.data.id;
-  const changeType = req.body.data.type;
-  if (changeType == "product" && productId) {
-    const product = await productMigrator(productId);
-    res.json(product);
+  if (a === 0) {
+    a = 1;
+    console.log("Product Updated Handling Route is initiated");
+    // respond with 200 OK
+    const productId = req.body.data.id;
+    const changeType = req.body.data.type;
+    if (changeType == "product" && productId) {
+      const product = await productMigrator(productId);
+      a = 0;
+      res.json(product);
+    }
   }
 });
 

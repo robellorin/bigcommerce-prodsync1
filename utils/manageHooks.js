@@ -5,8 +5,8 @@ const { APP_URL } = require("./config");
 const scopes = [
   { scope: "store/product/created", destination: "/webhooks/products/created" },
   { scope: "store/product/updated", destination: "/webhooks/products/updated" },
-  // { scope: "store/category/created", destination: "/webhooks/categories/created" },
-  // { scope: "store/category/updated", destination: "/webhooks/categories/updated" },
+  { scope: "store/category/created", destination: "/webhooks/categories/created" },
+  { scope: "store/category/updated", destination: "/webhooks/categories/updated" },
 ];
 
 module.exports = async () => {

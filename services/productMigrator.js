@@ -1,9 +1,11 @@
 const _ = require("lodash");
+const logger = require("../utils/logger");
 
 const { BigCommerceStoreA, BigCommerceStoreB } = require("../stores/stores");
 const { categoryMigrator } = require("./categoryMigrator");
 const { brandMigrator } = require("./brandMigrator");
 const { imageMigrator } = require("./imageMigrator");
+const { variantMigrator } = require("./variantMigrator");
 
 const productMigrator = async (id) => {
   let result;
@@ -13,14 +15,14 @@ const productMigrator = async (id) => {
   let responseFromA = await BigCommerceStoreA.get(`/catalog/products/${id}`);
 
   if (responseFromA.data.brand_id) {
-    console.log("brand migrator starting");
+    logger.info("brand migrator starting");
     const brand = await brandMigrator(responseFromA.data.brand_id);
     carriedBrand = brand.id;
   }
 
   const categoryIdsOnA = responseFromA.data.categories;
   for (const categoryId of categoryIdsOnA) {
-    console.log("category migrator starting");
+    logger.info("category migrator starting");
     const cat = await categoryMigrator(categoryId);
     carriedCategories.push(cat.id);
   }
@@ -31,7 +33,7 @@ const productMigrator = async (id) => {
   const productOnB = responseFromB.data[0];
 
   if (responseFromB.data && responseFromB.data.length > 0) {
-    console.log("b exists, update sequence");
+    logger.info("b exists, update sequence");
 
     let A = { ...productOnA };
     delete A.id;
@@ -43,29 +45,32 @@ const productMigrator = async (id) => {
     delete B.brand_id;
 
     if (!_.isEqual(A, B)) {
-      console.log("equality false, updating");
+      logger.info("equality false, updating");
       const product = { ...productOnA, id: productOnB.id, categories: [...carriedCategories], brand_id: carriedBrand };
 
       await BigCommerceStoreB.put(`/catalog/products/${productOnB.id}`, product);
-      console.log(`${product.name} product updated in Store B`);
+      logger.info(`${product.name} product updated in Store B`);
       result = product;
     } else {
-      console.log("equality true, no action");
+      logger.info("equality true, no action");
       result = productOnB;
     }
   } else {
-    console.log("b non existant, create new");
+    logger.info("b non existant, create new");
 
     const product = { ...productOnA, categories: [...carriedCategories], brand_id: carriedBrand };
     delete product.id;
 
     const createdProduct = await BigCommerceStoreB.post(`/catalog/products`, product);
-    console.log(`${product.name} product created in Store B`);
+    logger.info(`${product.name} product created in Store B`);
 
     result = createdProduct.data;
   }
 
   await imageMigrator(id, result.id);
+  await variantMigrator(id, result.id, productOnA.sku);
+
+  logger.info("finished everything, OK");
 
   return result;
 };
