@@ -1,6 +1,16 @@
 # Product Sync from Store A to Store B through bigcommerce webhook
 
-Sync Products, Categories, Brands, Images and Variant Options using Hooks.
+Sync Products, Categories, Brands, Images and Variant Options and Variants using Hooks.
+
+### Notes:
+
+- Product Updated Event: Check productUpdateEvents.md to see which fields trigger "updated" event.
+- Creating and Deleting Images don't trigger "updated" event. (According to API Docs)
+  - In reality creating and deleting image triggers this event
+  - Creating image triggers twice.
+  - When event triggered because of image, server doesn't receive 200 response. triggers again and again.
+- Creating Variants don't trigger "updated" event.
+- If you want to trigger an "updated" event, to start the store sync process, just include a field change in listed fields.
 
 ## 1. Install node modules
 

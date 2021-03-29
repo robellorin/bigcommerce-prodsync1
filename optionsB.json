@@ -1,0 +1,66 @@
+[
+  {
+    "id": 127,
+    "product_id": 187,
+    "name": "Color1616067479-187",
+    "display_name": "Color",
+    "type": "rectangles",
+    "sort_order": 0,
+    "option_values": [
+      {
+        "id": 140,
+        "label": "Red",
+        "sort_order": 0,
+        "value_data": null,
+        "is_default": false
+      },
+      {
+        "id": 141,
+        "label": "Green",
+        "sort_order": 1,
+        "value_data": null,
+        "is_default": false
+      },
+      {
+        "id": 142,
+        "label": "Blue",
+        "sort_order": 2,
+        "value_data": null,
+        "is_default": false
+      }
+    ],
+    "config": []
+  },
+  {
+    "id": 128,
+    "product_id": 187,
+    "name": "Size1616067480-187",
+    "display_name": "Size",
+    "type": "dropdown",
+    "sort_order": 1,
+    "option_values": [
+      {
+        "id": 143,
+        "label": "Small",
+        "sort_order": 0,
+        "value_data": null,
+        "is_default": false
+      },
+      {
+        "id": 144,
+        "label": "Medium",
+        "sort_order": 1,
+        "value_data": null,
+        "is_default": false
+      },
+      {
+        "id": 145,
+        "label": "Large",
+        "sort_order": 2,
+        "value_data": null,
+        "is_default": false
+      }
+    ],
+    "config": []
+  }
+]

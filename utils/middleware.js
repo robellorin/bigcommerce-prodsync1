@@ -15,6 +15,7 @@ const unknownEndpoint = (request, response) => {
 const errorHandler = (error, request, response, next) => {
   logger.error(error.message);
 
+  response.send("Finished with Errors");
   next(error);
 };
 

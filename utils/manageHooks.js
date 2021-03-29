@@ -5,6 +5,8 @@ const { APP_URL } = require("./config");
 const scopes = [
   { scope: "store/product/created", destination: "/webhooks/products/created" },
   { scope: "store/product/updated", destination: "/webhooks/products/updated" },
+  { scope: "store/sku/created", destination: "/webhooks/sku/created" },
+  { scope: "store/sku/updated", destination: "/webhooks/sku/updated" },
   { scope: "store/category/created", destination: "/webhooks/categories/created" },
   { scope: "store/category/updated", destination: "/webhooks/categories/updated" },
 ];
@@ -15,7 +17,7 @@ module.exports = async () => {
   const currentHooks = await BigCommerceStoreA.get("/hooks");
 
   for (const hook of currentHooks.data) {
-    const deletedHook = await BigCommerceStoreA.delete(`/hooks/${hook.id}`); //, async (request, response, next) => {});
+    await BigCommerceStoreA.delete(`/hooks/${hook.id}`);
   }
 
   logger.info("Creating New Hooks...");
@@ -27,6 +29,8 @@ module.exports = async () => {
       is_active: true,
     };
 
-    const createdHook = await BigCommerceStoreA.post("/hooks", body);
+    await BigCommerceStoreA.post("/hooks", body);
   }
+
+  logger.info("Hooks are Created. Listening...");
 };
