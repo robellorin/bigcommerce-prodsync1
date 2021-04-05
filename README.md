@@ -2,14 +2,22 @@
 
 Sync Products, Categories, Brands, Images and Variant Options and Variants using Hooks.
 
+## Features:
+
+- Program Can Sync Categories Independently by listening category "create" and "update" hooks.
+- Program syncs products to Store B independent of their state or existence in Store B.
+- Product sync happens for all "PRODUCT INFORMATION", Brand, Categories, Images and Variants.
+- Any kind of field update, including variant changes and Adding Image to a product can trigger product sync process.
+  - Deleting an Image does not trigger sync process, because it does not trigger any API webhook.
+  - Deleting a Variant Option triggers sku created webhook. But deleting a variant option value does not trigger any API webhook.
+- Depending on Image and variant count, sync process can take upto 15 seconds. Without image and variants, it takes around 3 seconds.
+
 ### Notes:
 
+- API Server must receive a 200 response within 10 seconds of hook event trigger. Therefore, response is sent immediately and process is run afterwards.
 - Product Updated Event: Check productUpdateEvents.md to see which fields trigger "updated" event.
-- Creating and Deleting Images don't trigger "updated" event. (According to API Docs)
-  - In reality creating and deleting image triggers this event
-  - Creating image triggers twice.
-  - When event triggered because of image, server doesn't receive 200 response. triggers again and again.
-- Creating Variants don't trigger "updated" event.
+- According to API Docs, Creating and Deleting Images should not trigger "updated" event. But in reality, creating an image triggers products/updated event twice (2 times). Deleting or updating an image doesn't trigger the event.
+- Creating Variants don't trigger "updated" event. Using sku hooks to listen for variant changes.
 - If you want to trigger an "updated" event, to start the store sync process, just include a field change in listed fields.
 
 ## 1. Install node modules
@@ -61,6 +69,8 @@ More detailed explanation here: https://developer.bigcommerce.com/api-docs/store
    2. scope: "store/product/updated", destination: "/webhooks/products/updated"
    3. scope: "store/category/created", destination: "/webhooks/categories/created"
    4. scope: "store/category/updated", destination: "/webhooks/categories/updated"
+   5. scope: "store/sku/created", destination: "/webhooks/sku/created"
+   6. scope: "store/sku/updated", destination: "/webhooks/sku/updated"
 
 3. Product Names are unique within a Store. But they can be updated. Therefore, this program uses `SKU field` to find products in Store B. In order to run without issue `SKU field` must be filled and shouldn't be changed for every product. Otherwise checking the existence of the product in Store B cannot function.
 
@@ -68,7 +78,7 @@ More detailed explanation here: https://developer.bigcommerce.com/api-docs/store
 
 5. When a product is updated on Store A, It carries all the product information to Store B. (updates if exists on Store B, creates new if doesn't exist)
 
-6. Category information also carried to Store B as part of product creation & update.
+6. Category and Brand information also carried to Store B as part of product creation & update.
 
 7. When a category is created on Store A, It carries all the category information to Store B. (updates if exists on Store B, creates new if doesn't exist)
 
