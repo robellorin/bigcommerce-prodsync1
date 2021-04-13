@@ -11,8 +11,7 @@ const STORE_B_HASH = process.env.STORE_B_HASH;
 const APP_URL = process.env.APP_URL;
 const PORT = process.env.PORT;
 
-const categoryEvents = [];
-const productEvents = [];
+const MONGODB_URI = process.env.MONGODB_URI;
 
 module.exports = {
   STORE_A_CLIENT_ID,
@@ -23,6 +22,5 @@ module.exports = {
   STORE_B_HASH,
   APP_URL,
   PORT,
-  categoryEvents,
-  productEvents,
+  MONGODB_URI,
 };

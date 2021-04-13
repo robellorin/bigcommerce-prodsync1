@@ -1,6 +1,6 @@
 const webhooksController = require("express").Router();
 
-const { processEvent } = require("../utils/processEvent");
+const { processEvent } = require("../databaseServices/processEvent");
 
 const tryProcess = async (type, id, res, next) => {
   try {

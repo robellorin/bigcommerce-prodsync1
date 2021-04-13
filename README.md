@@ -11,9 +11,14 @@ Sync Products, Categories, Brands, Images and Variant Options and Variants using
   - Deleting an Image does not trigger sync process, because it does not trigger any API webhook.
   - Deleting a Variant Option triggers sku created webhook. But deleting a variant option value does not trigger any API webhook.
 - Depending on Image and variant count, sync process can take upto 15 seconds. Without image and variants, it takes around 3 seconds.
+- Program uses a MongoDB database to store webhook events.
+- OK Response is sent immediately to satisfy the API. But each event tracked via program by a "processed" flag. This flag set to true only after event is syncronized to Store B successfully. If for some reason (downtime, network error on Store B, etc.) event cannot be synced to Store B, it is tried again and again until succeeded.
+- A cron scheduler is configured for syncronization process. (Every 15 seconds, checks new events and syncs if any)
+- A cron scheduler is configured to collect and remove processed event identifiers from the database (every 2 hours, deletes all processed events)
 
 ### Notes:
 
+- Product Names are unique within a Store. But they can be updated. Therefore, this program uses `SKU field` to find products in Store B. In order to run without issue `SKU field` must be filled and shouldn't be changed for every product. Otherwise checking the existence of the product in Store B cannot function.
 - API Server must receive a 200 response within 10 seconds of hook event trigger. Therefore, response is sent immediately and process is run afterwards.
 - Product Updated Event: Check productUpdateEvents.md to see which fields trigger "updated" event.
 - According to API Docs, Creating and Deleting Images should not trigger "updated" event. But in reality, creating an image triggers products/updated event twice (2 times). Deleting or updating an image doesn't trigger the event.
