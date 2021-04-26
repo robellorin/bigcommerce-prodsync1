@@ -1,6 +1,21 @@
-# Product Sync from Store A to Store B through bigcommerce webhook
+### Update: Channel Listing Activation (04.23.2021)
+
+# Sync Products from Store A to Store B through Bigcommerce Webhook
 
 Sync Products, Categories, Brands, Images and Variant Options and Variants using Hooks.
+Also, Activate on Channels configured on Store B.
+
+```
+Notes for Channel Activation Update:
+1. Permissions on API Account for Store B must be changed to enable channel activation through API. (ie. Channel Listings, Channel Settings, Sites & Routes and Products with modify, Information & Settings with Read-Only permissions)
+2. Complete List of Environment Variables are given in env.example file.
+3. There are 2 ways to enable channel listing activation:
+    a. If you ACTIVATE_ON_EACH_CHANNEL=true, you don't have to specify STORE_B_CHANNEL_ID. App goes through each Channel in Store B and activates the product on each.
+    b. If you set ACTIVATE_ON_EACH_CHANNEL to any value other than true, and if you specify a valid STORE_B_CHANNEL_ID; App activates the product on the specified channel.
+    c. If both values are empty or invalid, nothing happens regarding channel activation.
+4. Note that; channel activation on Store A does not trigger any webhooks.
+
+```
 
 ## Features:
 
@@ -34,14 +49,23 @@ npm install
 ### You Need Following Env Variables
 
 ```
-- APP_URL=
-- PORT=
-- STORE_A_CLIENT_ID=
-- STORE_A_ACCESS_TOKEN=
-- STORE_A_HASH=
-- STORE_B_CLIENT_ID=
-- STORE_B_ACCESS_TOKEN=
-- STORE_B_HASH=
+APP_URL=
+PORT=
+
+MONGODB_URI=
+SYNC_PERIOD_IN_SECS=
+CLEAN_PERIOD_IN_HOURS=
+
+STORE_A_CLIENT_ID=
+STORE_A_ACCESS_TOKEN=
+STORE_A_HASH=
+
+STORE_B_CLIENT_ID=
+STORE_B_ACCESS_TOKEN=
+STORE_B_HASH=
+
+ACTIVATE_ON_EACH_CHANNEL=
+STORE_B_CHANNEL_ID=
 ```
 
 STORE_HASH info is part of the Store URL: https://store-{{STORE_HASH}}.mybigcommerce.com

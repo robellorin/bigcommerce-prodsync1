@@ -6,6 +6,7 @@ const { categoryMigrator } = require("./categoryMigrator");
 const { brandMigrator } = require("./brandMigrator");
 const { imageMigrator } = require("./imageMigrator");
 const { variantMigrator } = require("./variantMigrator");
+const { listingMigrator } = require("./listingMigrator");
 
 const productMigrator = async (id) => {
   let result;
@@ -66,6 +67,8 @@ const productMigrator = async (id) => {
   if (productOnA.variants.length >= 1 && productOnA.variants[0].sku !== productOnA.sku) {
     await variantMigrator(id, result.id, productOnA.sku, result.sku);
   }
+
+  await listingMigrator(result.id);
 
   return result;
 };

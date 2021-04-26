@@ -8,6 +8,9 @@ const STORE_B_CLIENT_ID = process.env.STORE_B_CLIENT_ID;
 const STORE_B_ACCESS_TOKEN = process.env.STORE_B_ACCESS_TOKEN;
 const STORE_B_HASH = process.env.STORE_B_HASH;
 
+const ACTIVATE_ON_EACH_CHANNEL = process.env.ACTIVATE_ON_EACH_CHANNEL;
+const STORE_B_CHANNEL_ID = process.env.STORE_B_CHANNEL_ID;
+
 const APP_URL = process.env.APP_URL;
 const PORT = process.env.PORT;
 
@@ -20,6 +23,8 @@ module.exports = {
   STORE_B_CLIENT_ID,
   STORE_B_ACCESS_TOKEN,
   STORE_B_HASH,
+  ACTIVATE_ON_EACH_CHANNEL,
+  STORE_B_CHANNEL_ID,
   APP_URL,
   PORT,
   MONGODB_URI,
