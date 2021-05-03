@@ -1,3 +1,19 @@
+### Update: Update Purchasibility on Store B, depending on Listing Status on a Channel In Store A (04.29.2021)
+
+Product sync logic is adjusted slightly.
+
+Program now accepts an environment variable **`STORE_B_CHANNEL_ON_STORE_A`** which stores the `CHANNEL ID` of a channel on `STORE A`, representing `STORE B`. (check .env.example)
+
+If there is no **`STORE_B_CHANNEL_ON_STORE_A`**, product sync works as before.
+
+When there is a **`STORE_B_CHANNEL_ON_STORE_A`**, program checks if syncing product is listed on that channel and if yes, whether its state is set to `active`.
+
+- If both are true, product `availability` (availability on JSON data, `Purchasibility` on Dashboard) is set to `available`
+
+* Otherwise `availability` set to `disabled`
+
+Only workflow problem at the moment is that there is no webhook to listen for channel listing events. Therefore each channel listing change must be followed by a product update, in order to trigger a product update event.
+
 ### Update: Channel Listing Activation (04.23.2021)
 
 # Sync Products from Store A to Store B through Bigcommerce Webhook

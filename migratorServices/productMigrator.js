@@ -1,12 +1,13 @@
 const _ = require("lodash");
 
+const { STORE_B_CHANNEL_ON_STORE_A } = require("../utils/config");
 const { BigCommerceStoreA, BigCommerceStoreB } = require("../stores/stores");
 
 const { categoryMigrator } = require("./categoryMigrator");
 const { brandMigrator } = require("./brandMigrator");
 const { imageMigrator } = require("./imageMigrator");
 const { variantMigrator } = require("./variantMigrator");
-const { listingMigrator } = require("./listingMigrator");
+const { availabilityMigrator } = require("./availabilityMigrator");
 
 const productMigrator = async (id) => {
   let result;
@@ -27,6 +28,11 @@ const productMigrator = async (id) => {
   }
 
   const productOnA = responseFromA.data;
+
+  if (STORE_B_CHANNEL_ON_STORE_A) {
+    const availability = await availabilityMigrator(id);
+    productOnA.availability = availability;
+  }
 
   const responseFromB = await BigCommerceStoreB.get(`/catalog/products?sku=${escape(productOnA.sku)}&include=variants`);
   const productOnB = responseFromB.data[0];
@@ -68,7 +74,7 @@ const productMigrator = async (id) => {
     await variantMigrator(id, result.id, productOnA.sku, result.sku);
   }
 
-  await listingMigrator(result.id);
+  // await listingMigrator(result.id);
 
   return result;
 };

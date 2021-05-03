@@ -1,3 +1,7 @@
+/*
+ * This Function Activates Synced Products on Channels configured on Store B
+ * Currently Not Used
+ */
 const { ACTIVATE_ON_EACH_CHANNEL, STORE_B_CHANNEL_ID } = require("../utils/config");
 const { BigCommerceStoreB } = require("../stores/stores");
 
