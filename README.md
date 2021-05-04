@@ -87,8 +87,15 @@ STORE_B_CHANNEL_ID=
 STORE_HASH info is part of the Store URL: https://store-{{STORE_HASH}}.mybigcommerce.com
 
 You can get API Access Tokens from Store Dashboard: https://store-{{STORE_HASH}}.mybigcommerce.com/manage/settings/auth/api-accounts
-
-> And App Should Be Running in The Specified URL.
+- Use the following scopes when creating API credentials for the source store (STORE_A) 
+  - Information & Settings Read-Only
+  - Products Read-Only
+  - Sites & Routes Read-Only
+  - Channel Listings Read-Only
+  - Channel Settings Read-Only
+- Use the following scopes when creating API credentials for the destination store (STORE_B)
+  - Information & Settings Read-Only
+  - Products Modify
 
 ## 2. If You Want To Run The App in Local Machine
 
