@@ -31,8 +31,14 @@ mongoose
   });
 
 logger.info("Starting App...");
+
+// delete existing hooks, create new hooks
 manageHooks();
+
+// set up the cron scheduler to trigger sync process
 syncer();
+
+// set up the cron scheduler to clean proccessed records from the database
 cleaner();
 
 app.use(cors());

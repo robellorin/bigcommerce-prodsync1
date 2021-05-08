@@ -2,6 +2,7 @@ const logger = require("./logger");
 const { BigCommerceStoreA } = require("../stores/stores");
 const { APP_URL } = require("./config");
 
+// list of webhook scopes program listens to
 const scopes = [
   { scope: "store/product/created", destination: "/webhooks/products/created" },
   { scope: "store/product/updated", destination: "/webhooks/products/updated" },

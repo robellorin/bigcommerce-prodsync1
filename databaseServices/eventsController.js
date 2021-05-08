@@ -36,8 +36,6 @@ const deleteProcessedEvents = async () => {
 };
 
 const updateEventsAsProcessed = async (eventId) => {
-  console.log("update event in db");
-
   const result = await Event.updateMany({ eventId }, { isProcessed: true });
   console.log(result);
   return result;

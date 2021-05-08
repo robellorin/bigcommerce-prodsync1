@@ -7,6 +7,7 @@ const variantMigrator = async (productIdA, productIdB, productSkuA, productSkuB)
   const variantsOnA = responseVariantsA.data;
 
   // if there is only base variant, do nothing
+  // This check may seem redundant in the current state of the code and varianMigrator only called from one place. But nevertheless, should stay in this context imho.
   if (variantsOnA.length === 1 && variantsOnA[0].sku === productSkuA) {
     return;
   }
@@ -14,12 +15,14 @@ const variantMigrator = async (productIdA, productIdB, productSkuA, productSkuB)
   const responseVariantsB = await BigCommerceStoreB.get(`/catalog/products/${productIdB}/variants`);
   const variantsOnB = responseVariantsB.data;
 
+  // delete all non-base variants from object on B
   if (variantsOnB.length && variantsOnB[0].sku !== productSkuB) {
     for (const variant of variantsOnB) {
       await BigCommerceStoreB.delete(`/catalog/products/${productIdB}/variants/${variant.id}`);
     }
   }
 
+  // delete all options from object on B
   const optionResponseB1 = await BigCommerceStoreB.get(`/catalog/products/${productIdB}/options`);
   const optionsOnB1 = optionResponseB1.data;
 
@@ -61,6 +64,7 @@ const variantMigrator = async (productIdA, productIdB, productSkuA, productSkuB)
     delete variant.product_id;
     delete variant.sku_id;
 
+    // construct option values for the variant
     let newOptionValues = [];
     for (const value of variant.option_values) {
       value.option_id = optionsObjectB[value.option_display_name].id;

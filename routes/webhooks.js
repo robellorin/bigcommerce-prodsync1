@@ -2,6 +2,7 @@ const webhooksController = require("express").Router();
 
 const { processEvent } = require("../databaseServices/processEvent");
 
+// wrapper method that forwards data to event processer and returns 200 to satisfy BigCommerce Webhooks API
 const tryProcess = async (type, id, res, next) => {
   try {
     processEvent(type, id);

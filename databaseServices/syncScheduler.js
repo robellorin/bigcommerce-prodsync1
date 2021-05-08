@@ -5,9 +5,12 @@ const { productMigrator } = require("../migratorServices/productMigrator");
 const { categoryMigrator } = require("../migratorServices/categoryMigrator");
 
 module.exports = async () => {
-  //start syncronization every 15 seconds
+  // start syncronization every 15 seconds.
   const syncer = cron.schedule("*/15 * * * * *", async () => {
     const product = await getEventbyType("product");
+
+    // if there is an unprocessed product in the database, we continue with that. otherwise pick the next unprocessed category
+    // start the migrator and after successful migration, update flags on all db records with the same event id.
     if (product) {
       try {
         await productMigrator(product.eventId);
